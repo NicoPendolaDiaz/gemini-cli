@@ -10,7 +10,6 @@ Slash commands provide meta-level control over the CLI itself.
 
 - **`/bug`**
   - **Description:** File an issue about Gemini CLI. By default, the issue is filed within the GitHub repository for Gemini CLI. The string you enter after `/bug` will become the headline for the bug being filed. The default `/bug` behavior can be modified using the `bugCommand` setting in your `.gemini/settings.json` files.
-
 - **`/chat`**
   - **Description:** Save and resume conversation history for branching conversation state interactively, or resuming a previous state from a later session.
   - **Sub-commands:**
@@ -27,26 +26,19 @@ Slash commands provide meta-level control over the CLI itself.
       - **Usage:** `/chat resume <tag>`
     - **`list`**
       - **Description:** Lists available tags for chat state resumption.
-
 - **`/clear`**
   - **Description:** Clear the terminal screen, including the visible session history and scrollback within the CLI. The underlying session data (for history recall) might be preserved depending on the exact implementation, but the visual display is cleared.
   - **Keyboard shortcut:** Press **Ctrl+L** at any time to perform a clear action.
-
 - **`/compress`**
   - **Description:** Replace the entire chat context with a summary. This saves on tokens used for future tasks while retaining a high level summary of what has happened.
-
 - **`/copy`**
   - **Description:** Copies the last output produced by Gemini CLI to your clipboard, for easy sharing or reuse.
-
 - **`/editor`**
   - **Description:** Open a dialog for selecting supported editors.
-
 - **`/extensions`**
   - **Description:** Lists all active extensions in the current Gemini CLI session. See [Gemini CLI Extensions](../extension.md).
-
 - **`/help`** (or **`/?`**)
   - **Description:** Display help information about Gemini CLI, including available commands and their usage.
-
 - **`/mcp`**
   - **Description:** List configured Model Context Protocol (MCP) servers, their connection status, server details, and available tools.
   - **Sub-commands:**
@@ -57,7 +49,6 @@ Slash commands provide meta-level control over the CLI itself.
     - **`schema`**:
       - **Description:** Show the full JSON schema for the tool's configured parameters.
   - **Keyboard Shortcut:** Press **Ctrl+T** at any time to toggle between showing and hiding tool descriptions.
-
 - **`/memory`**
   - **Description:** Manage the AI's instructional context (hierarchical memory loaded from `GEMINI.md` files).
   - **Sub-commands:**
@@ -68,24 +59,18 @@ Slash commands provide meta-level control over the CLI itself.
     - **`refresh`**:
       - **Description:** Reload the hierarchical instructional memory from all `GEMINI.md` files found in the configured locations (global, project/ancestors, and sub-directories). This command updates the model with the latest `GEMINI.md` content.
     - **Note:** For more details on how `GEMINI.md` files contribute to hierarchical memory, see the [CLI Configuration documentation](./configuration.md#4-geminimd-files-hierarchical-instructional-context).
-
 - **`/restore`**
   - **Description:** Restores the project files to the state they were in just before a tool was executed. This is particularly useful for undoing file edits made by a tool. If run without a tool call ID, it will list available checkpoints to restore from.
   - **Usage:** `/restore [tool_call_id]`
   - **Note:** Only available if the CLI is invoked with the `--checkpointing` option or configured via [settings](./configuration.md). See [Checkpointing documentation](../checkpointing.md) for more details.
-
 - **`/stats`**
   - **Description:** Display detailed statistics for the current Gemini CLI session, including token usage, cached token savings (when available), and session duration. Note: Cached token information is only displayed when cached tokens are being used, which occurs with API key authentication but not with OAuth authentication at this time.
-
 - [**`/theme`**](./themes.md)
   - **Description:** Open a dialog that lets you change the visual theme of Gemini CLI.
-
 - **`/auth`**
   - **Description:** Open a dialog that lets you change the authentication method.
-
 - **`/about`**
   - **Description:** Show version info. Please share this information when filing issues.
-
 - [**`/tools`**](../tools/index.md)
   - **Description:** Display a list of tools that are currently available within Gemini CLI.
   - **Sub-commands:**
@@ -93,13 +78,10 @@ Slash commands provide meta-level control over the CLI itself.
       - **Description:** Show detailed descriptions of each tool, including each tool's name with its full description as provided to the model.
     - **`nodesc`** or **`nodescriptions`**:
       - **Description:** Hide tool descriptions, showing only the tool names.
-
 - **`/privacy`**
   - **Description:** Display the Privacy Notice and allow users to select whether they consent to the collection of their data for service improvement purposes.
-
 - **`/quit`** (or **`/exit`**)
   - **Description:** Exit Gemini CLI.
-
 - **`/vim`**
   - **Description:** Toggle vim mode on or off. When vim mode is enabled, the input area supports vim-style navigation and editing commands in both NORMAL and INSERT modes.
   - **Features:**
@@ -217,6 +199,7 @@ When a custom command attempts to execute a shell command, Gemini CLI will now p
 1.  **Inject Commands:** Use the `!{...}` syntax in your `prompt` to specify where the command should be run and its output injected.
 2.  **Confirm Execution:** When you run the command, a dialog will appear listing the shell commands the prompt wants to execute.
 3.  **Grant Permission:** You can choose to:
+
     - **Allow once:** The command(s) will run this one time.
     - **Allow always for this session:** The command(s) will be added to a temporary allowlist for the current CLI session and will not require confirmation again.
     - **No:** Cancel the execution of the shell command(s).
@@ -237,7 +220,9 @@ description = "Generates a Git commit message based on staged changes."
 prompt = """
 Please generate a Conventional Commit message based on the following git diff:
 
-```diff
+```
+
+diff
 !{git diff --staged}
 ```
 
@@ -257,7 +242,9 @@ Let's create a global command that asks the model to refactor a piece of code.
 
 First, ensure the user commands directory exists, then create a `refactor` subdirectory for organization and the final TOML file.
 
-```bash
+```
+
+bash
 mkdir -p ~/.gemini/commands/refactor
 touch ~/.gemini/commands/refactor/pure.toml
 ````
@@ -311,7 +298,6 @@ At commands are used to include the content of files or directories as part of y
     - **Git-aware filtering:** By default, git-ignored files (like `node_modules/`, `dist/`, `.env`, `.git/`) are excluded. This behavior can be changed via the `fileFiltering` settings.
     - **File types:** The command is intended for text-based files. While it might attempt to read any file, binary files or very large files might be skipped or truncated by the underlying `read_many_files` tool to ensure performance and relevance. The tool indicates if files were skipped.
   - **Output:** The CLI will show a tool call message indicating that `read_many_files` was used, along with a message detailing the status and the path(s) that were processed.
-
 - **`@` (Lone at symbol)**
   - **Description:** If you type a lone `@` symbol without a path, the query is passed as-is to the Gemini model. This might be useful if you are specifically talking _about_ the `@` symbol in your prompt.
 
@@ -329,7 +315,6 @@ The `!` prefix lets you interact with your system's shell directly from within G
   - **Examples:**
     - `!ls -la` (executes `ls -la` and returns to Gemini CLI)
     - `!git status` (executes `git status` and returns to Gemini CLI)
-
 - **`!` (Toggle shell mode)**
   - **Description:** Typing `!` on its own toggles shell mode.
     - **Entering shell mode:**
@@ -337,7 +322,5 @@ The `!` prefix lets you interact with your system's shell directly from within G
       - While in shell mode, text you type is interpreted directly as a shell command.
     - **Exiting shell mode:**
       - When exited, the UI reverts to its standard appearance and normal Gemini CLI behavior resumes.
-
 - **Caution for all `!` usage:** Commands you execute in shell mode have the same permissions and impact as if you ran them directly in your terminal.
-
 - **Environment Variable:** When a command is executed via `!` or in shell mode, the `GEMINI_CLI=1` environment variable is set in the subprocess's environment. This allows scripts or tools to detect if they are being run from within the Gemini CLI.
