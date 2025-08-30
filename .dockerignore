@@ -1,0 +1,35 @@
+# Git and editor files
+.git
+.github
+.vscode
+.idea
+*.iml
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env~
+
+# gemini-cli settings, but keep config
+.gemini/
+!gemini/config.yaml
+
+# Dependencies
+node_modules
+bower_components
+
+# Build artifacts and logs
+*.tsbuildinfo
+bundle
+junit.xml
+packages/*/coverage/
+packages/cli/src/generated/
+.integration-tests/
+packages/vscode-ide-companion/*.vsix
+
+# The Dockerfile itself
+Dockerfile
+.dockerignore
